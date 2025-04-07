@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Vendor
+server:
+  port: 8080
+
+# MongoDB Configuration
+mongo:
+  host: localhost
+  port: 27017
+  dbName: test
+  collectionName: employees
