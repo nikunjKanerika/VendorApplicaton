@@ -4,6 +4,8 @@ import com.kanerika.Vendor.dbClasses.MongoDB;
 import com.kanerika.Vendor.dbClasses.Postgres;
 import com.kanerika.Vendor.dbClasses.MySQL;
 import com.kanerika.Vendor.dto.VendorRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,8 @@ import org.springframework.http.MediaType;
 @RestController
 @RequestMapping("/vendor")
 public class VendorController {
+
+    private static final Logger logger = LoggerFactory.getLogger(VendorController.class.getSimpleName());
 
     @PostMapping
     public ResponseEntity<String> validate(@RequestBody VendorRequest request) {
@@ -33,11 +37,11 @@ public class VendorController {
                 throw new IllegalArgumentException("Unsupported vendor: " + vendorName);
         }
 
-        System.out.println("Host: " + request.getConnectionParam().get("host"));
-        System.out.println("Port: " + request.getConnectionParam().get("port"));
-        System.out.println("Schema path: " + request.getSchemapath());
+        logger.info("Host: " + request.getConnectionParam().getHost());
+        logger.info("Port: " + request.getConnectionParam().getPort());
+        logger.info("Schema path: " + request.getSchemapath());
 
-        result = db.connect();
+        result = db.connect(request);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

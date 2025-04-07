@@ -1,57 +1,59 @@
-//package com.example.Vendor.dbClasses;
-//
-//import com.mongodb.client.MongoClient;
-//import com.mongodb.client.MongoClients;
-//import com.mongodb.client.MongoDatabase;
-//import com.example.Vendor.GeneralVendor;
-//
-//public class MongoDB implements GeneralVendor {
-//
-//    @Override
-//    public String connect() {
-//        String connectionString = "mongodb://localhost:27017"; // replace with dynamic param if needed
-//
-//        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
-//            MongoDatabase database = mongoClient.getDatabase("test"); // replace with your DB name
-//            return "Connected to MongoDB. Database name: " + database.getName();
-//        } catch (Exception e) {
-//            return "Connection to MongoDB failed: " + e.getMessage();
-//        }
-//    }
-//}
 package com.kanerika.Vendor.dbClasses;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.FindIterable;
+import com.google.gson.Gson;
+import com.kanerika.Vendor.dto.VendorRequest;
+import com.mongodb.client.*;
 
 import com.kanerika.Vendor.GeneralVendor;
 import org.bson.Document;
 
+import java.util.*;
+
 public class MongoDB implements GeneralVendor {
 
     @Override
-    public String connect() {
-        String connectionString = "mongodb://localhost:27017"; // replace with dynamic param if needed
+    public String connect(VendorRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            if (!"27017".equals(request.getConnectionParam().getPort())) {
+                throw new RuntimeException("Unsupported MongoDB port: " + request.getConnectionParam().getPort());
+            }
+            String uri = "mongodb://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort();
+            String dbName = "test";
+            String collectionName = "employees";
 
-        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
-            MongoDatabase database = mongoClient.getDatabase("test"); // replace with your DB name
-            MongoCollection<Document> collection = database.getCollection("employees"); // your collection name
+            List<Map<String, Object>> data = new ArrayList<>();
+            Set<String> columns = new LinkedHashSet<>();
 
-            StringBuilder result = new StringBuilder("Connected to MongoDB. Database name: " + database.getName() + "\n");
-//            result.append("Data in 'employees' collection:\n");
-
-            // Retrieve and iterate over documents
+            MongoClient mongoClient = MongoClients.create(uri);
+            MongoDatabase database = mongoClient.getDatabase(dbName);
+            Document ping = new Document("ping", 1);
+            database.runCommand(ping);
+            MongoCollection<Document> collection = database.getCollection(collectionName);
             FindIterable<Document> documents = collection.find();
+
             for (Document doc : documents) {
-                result.append(doc.toJson()).append("\n");
+                Map<String, Object> row = new HashMap<>();
+                for (Map.Entry<String, Object> entry : doc.entrySet()) {
+                    row.put(entry.getKey(), entry.getValue());
+                    columns.add(entry.getKey());
+                }
+                data.add(row);
             }
 
-            return result.toString();
+            response.put("status", "success");
+            response.put("message", "Connected to MongoDB successfully!");
+            response.put("columns", new ArrayList<>(columns));
+            response.put("data", data);
+
         } catch (Exception e) {
-            return "Connection to MongoDB failed: " + e.getMessage();
+            response.put("status", "error");
+            response.put("message", "Connection to MongoDB failed");
+            response.put("error", e.getMessage());
         }
+
+        return new Gson().toJson(response);
     }
+
+
 }

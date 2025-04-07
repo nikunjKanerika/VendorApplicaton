@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.kanerika.Vendor.GeneralVendor;
+import com.kanerika.Vendor.dto.VendorRequest;
 
 public class Postgres implements GeneralVendor {
 
     @Override
-    public String connect() {
-        String url = "jdbc:postgresql://localhost:5432/test";
+    public String connect(VendorRequest request) {
+        String url = "jdbc:postgresql://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/test";
         String username = "postgres";
         String password = "postgres";
 

@@ -1,7 +1,9 @@
 package com.kanerika.Vendor;
 
+import com.kanerika.Vendor.dto.VendorRequest;
+
 public interface GeneralVendor {
-    String connect();
+    String connect(VendorRequest request);
 
 }
 

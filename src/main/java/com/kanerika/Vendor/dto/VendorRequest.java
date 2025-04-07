@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class VendorRequest {
     private String vendor;
-    private Map<String, String> connectionParam;
+    private ConnectionParam connectionParam;
     private String schemapath;
 
     // Getters and Setters
@@ -17,11 +17,11 @@ public class VendorRequest {
         this.vendor = vendor;
     }
 
-    public Map<String, String> getConnectionParam() {
+    public ConnectionParam getConnectionParam() {
         return connectionParam;
     }
 
-    public void setConnectionParam(Map<String, String> connectionParam) {
+    public void setConnectionParam(ConnectionParam connectionParam) {
         this.connectionParam = connectionParam;
     }
 
