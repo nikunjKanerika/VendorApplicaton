@@ -8,9 +8,11 @@ import com.mongodb.client.*;
 import com.kanerika.Vendor.GeneralVendor;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class MongoDB implements GeneralVendor {
     @Autowired
     private MongoProperties mongoProperties;

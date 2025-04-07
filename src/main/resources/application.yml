@@ -10,3 +10,21 @@ mongo:
   port: 27017
   dbName: test
   collectionName: employees
+
+# Postgres Configuration
+postgres:
+  host: localhost
+  port: 5432
+  dbName: test
+  username: postgres
+  password: postgres
+  driver: org.postgresql.Driver
+
+# MySQL Configuration
+mysql:
+  host: localhost
+  port: 3309
+  dbName: test
+  username: root
+  password:
+  driver: com.mysql.cj.jdbc.Driver

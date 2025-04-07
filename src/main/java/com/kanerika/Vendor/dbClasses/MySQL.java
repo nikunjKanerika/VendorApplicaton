@@ -2,9 +2,12 @@ package com.kanerika.Vendor.dbClasses;
 
 import com.google.gson.Gson;
 import com.kanerika.Vendor.GeneralVendor;
+import com.kanerika.Vendor.config.MySQLProperties;
 import com.kanerika.Vendor.dto.VendorRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,18 +15,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class MySQL implements GeneralVendor {
 
     private static final Logger logger = LoggerFactory.getLogger(MySQL.class.getSimpleName());
 
+    @Autowired
+    MySQLProperties mySQLProperties;
+
     @Override
     public String connect(VendorRequest request) {
-        String url = "jdbc:mysql://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/test";
-        String username = "root";
-        String password = "";
+
+
+        String url = "jdbc:mysql://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/" + mySQLProperties.getDbName();
+        String username = mySQLProperties.getUsername();
+        String password = mySQLProperties.getPassword();
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(mySQLProperties.getDriver());
             Connection connection = null;
             try {
                 connection = DriverManager.getConnection(url, username, password);

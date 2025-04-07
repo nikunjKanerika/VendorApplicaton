@@ -7,18 +7,25 @@ import java.util.List;
 import java.util.Map;
 
 import com.kanerika.Vendor.GeneralVendor;
+import com.kanerika.Vendor.config.PostgresProperties;
 import com.kanerika.Vendor.dto.VendorRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Postgres implements GeneralVendor {
+
+    @Autowired
+    PostgresProperties postgresProperties;
 
     @Override
     public String connect(VendorRequest request) {
-        String url = "jdbc:postgresql://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/test";
-        String username = "postgres";
-        String password = "postgres";
+        String url = "jdbc:postgresql://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/" + postgresProperties.getDbName();
+        String username = postgresProperties.getUsername();
+        String password = postgresProperties.getPassword();
 
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(postgresProperties.getDriver());
 
             Connection connection = DriverManager.getConnection(url, username, password);
 
