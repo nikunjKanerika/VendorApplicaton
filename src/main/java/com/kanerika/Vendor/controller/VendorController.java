@@ -3,7 +3,9 @@ import com.kanerika.Vendor.GeneralVendor;
 import com.kanerika.Vendor.dbClasses.MongoDB;
 import com.kanerika.Vendor.dbClasses.Postgres;
 import com.kanerika.Vendor.dbClasses.MySQL;
+import com.kanerika.Vendor.dto.ConnectionParam;
 import com.kanerika.Vendor.dto.VendorRequest;
+import com.kanerika.Vendor.util.JdbcConnectionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import java.sql.SQLException;
+
+import static com.kanerika.Vendor.util.JdbcConnectionHelper.getHostAndPortByConnectionId;
 
 @RestController
 @RequestMapping("/vendor")
@@ -31,11 +37,25 @@ public class VendorController {
 
     @PostMapping
     public ResponseEntity<String> validate(@RequestBody VendorRequest request) {
-        String vendorName = request.getVendor();
+//        String vendorName = request.getVendor();
+        String vendor = "";
+        String connectionId = request.getConnectionId();
+        try {
+            // Call the static method from JdbcConnectionHelper
+             vendor = JdbcConnectionHelper.getVendorByConnectionId(connectionId);
+
+            // Print the result
+            System.out.println("Vendor for connectionId " + connectionId + ": " + vendor);
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
         String result;
         GeneralVendor db;
 
-        switch (vendorName.toLowerCase()) {
+        switch (vendor.toLowerCase()) {
             case "postgres":
                 db = postgres;
                 break;
@@ -46,14 +66,26 @@ public class VendorController {
                 db = mySQL;
                 break;
             default:
-                throw new IllegalArgumentException("Unsupported vendor: " + vendorName);
+                throw new IllegalArgumentException("Unsupported vendor: " + vendor);
         }
 
-        logger.info("Host: " + request.getConnectionParam().getHost());
-        logger.info("Port: " + request.getConnectionParam().getPort());
-        logger.info("Schema path: " + request.getSchemapath());
-
+//        logger.info("Host: " + request.getConnectionParam().getHost());
+//        logger.info("Port: " + request.getConnectionParam().getPort());
         result = db.connect(request);
+
+        logger.info("Schema path: " + request.getSchemapath());
+        String tableName = request.getTable();
+
+        try {
+            String[] hostAndPort = JdbcConnectionHelper.getHostAndPortByConnectionId(connectionId);
+            String[] usernameAndPassword = JdbcConnectionHelper.getUsernameAndPassword(connectionId);
+
+//            result = db.connect(request);
+            result = db.connect(hostAndPort[0], hostAndPort[1], usernameAndPassword[0], usernameAndPassword[1]);
+        } catch (Exception e) {
+            logger.error("❌ Error while connecting to DB: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body("Error occurred while connecting to database: " + e.getMessage());
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

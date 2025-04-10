@@ -1,12 +1,27 @@
-// src/main/java/com/example/Vendor/dto/VendorRequest.java
 package com.kanerika.Vendor.dto;
-
-import java.util.Map;
 
 public class VendorRequest {
     private String vendor;
     private ConnectionParam connectionParam;
     private String schemapath;
+    private String connectionId;
+    private String table;
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    }
 
     // Getters and Setters
     public String getVendor() {

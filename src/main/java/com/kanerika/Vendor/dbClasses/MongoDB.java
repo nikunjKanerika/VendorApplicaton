@@ -61,5 +61,15 @@ public class MongoDB implements GeneralVendor {
         return new Gson().toJson(response);
     }
 
+    @Override
+    public String connect(String host, String port, String username, String password) {
+        return "";
+    }
+
+    @Override
+    public String connect(String s, String s1) {
+        return "";
+    }
+
 
 }
