@@ -69,8 +69,6 @@ public class VendorController {
                 throw new IllegalArgumentException("Unsupported vendor: " + vendor);
         }
 
-//        logger.info("Host: " + request.getConnectionParam().getHost());
-//        logger.info("Port: " + request.getConnectionParam().getPort());
         result = db.connect(request);
 
         logger.info("Schema path: " + request.getSchemapath());
@@ -80,7 +78,6 @@ public class VendorController {
             String[] hostAndPort = JdbcConnectionHelper.getHostAndPortByConnectionId(connectionId);
             String[] usernameAndPassword = JdbcConnectionHelper.getUsernameAndPassword(connectionId);
 
-//            result = db.connect(request);
             result = db.connect(hostAndPort[0], hostAndPort[1], usernameAndPassword[0], usernameAndPassword[1]);
         } catch (Exception e) {
             logger.error("❌ Error while connecting to DB: {}", e.getMessage(), e);
