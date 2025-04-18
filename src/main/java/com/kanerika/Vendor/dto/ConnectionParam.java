@@ -14,6 +14,13 @@ public class ConnectionParam {
         this.username = username;
         this.password = password;
     }
+    public ConnectionParam(Integer id, String host, String port) {
+        this.id = id;
+        this.host = host;
+        this.port = port;
+        this.username = null;
+        this.password = null;
+    }
 
     public ConnectionParam(){
 

@@ -5,14 +5,24 @@ public class VendorRequest {
     private ConnectionParam connectionParam;
     private String schemapath;
     private String connectionId;
-    private String table;
+    private String offset;
+    private String limit;
 
-    public String getTable() {
-        return table;
+
+    public String getOffset() {
+        return offset;
     }
 
-    public void setTable(String table) {
-        this.table = table;
+    public void setOffset(String offset) {
+        this.offset = offset;
+    }
+
+    public String getLimit() {
+        return limit;
+    }
+
+    public void setLimit(String limit) {
+        this.limit = limit;
     }
 
     public String getConnectionId() {

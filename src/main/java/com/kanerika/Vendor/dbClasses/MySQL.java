@@ -105,5 +105,16 @@ public class MySQL implements GeneralVendor {
         return "";
     }
 
+    @Override
+    public String executeQuery(String query) {
+        return "";
+    }
+
+    @Override
+    public String executeUnloadData(String query, String format, String location) {
+        return "";
+    }
+
+
 
 }
