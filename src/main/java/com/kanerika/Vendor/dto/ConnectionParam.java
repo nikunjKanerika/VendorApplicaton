@@ -1,21 +1,30 @@
 package com.kanerika.Vendor.dto;
 
 public class ConnectionParam {
-    private Integer id;
+//    private Integer id;
     private String host;
     private String port;
     private String username;
     private String password;
+    private String connectionName;
+
+    public String getConnectionName() {
+        return connectionName;
+    }
+
+    public void setConnectionName(String connectionName) {
+        this.connectionName = connectionName;
+    }
 
     public ConnectionParam(Integer id, String host, String port, String username, String password) {
-        this.id = id;
+//        this.id = id;
         this.host = host;
         this.port = port;
         this.username = username;
         this.password = password;
     }
     public ConnectionParam(Integer id, String host, String port) {
-        this.id = id;
+//        this.id = id;
         this.host = host;
         this.port = port;
         this.username = null;
@@ -26,13 +35,13 @@ public class ConnectionParam {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public String getHost() {
         return host;
@@ -69,7 +78,7 @@ public class ConnectionParam {
     @Override
     public String toString() {
         return "ConnectionParam{" +
-                "id=" + id +
+//                "id=" + id +
                 ", host='" + host + '\'' +
                 ", port='" + port + '\'' +
                 ", username='" + username + '\'' +

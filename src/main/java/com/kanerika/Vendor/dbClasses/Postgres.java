@@ -108,8 +108,7 @@ public class Postgres implements GeneralVendor {
     }
     public String connect(String host, String port,String username, String password) {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + postgresProperties.getDbName();
-//        String username = postgresProperties.getUsername();
-//        String password = postgresProperties.getPassword();
+
 
         try {
             Class.forName(postgresProperties.getDriver());

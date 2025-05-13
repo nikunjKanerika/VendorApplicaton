@@ -3,6 +3,7 @@ import com.kanerika.Vendor.GeneralVendor;
 import com.kanerika.Vendor.dbClasses.MongoDB;
 import com.kanerika.Vendor.dbClasses.Postgres;
 import com.kanerika.Vendor.dbClasses.MySQL;
+import com.kanerika.Vendor.dbClasses.Sftp;
 import com.kanerika.Vendor.dto.ConnectionParam;
 import com.kanerika.Vendor.dto.CustomSQLRequest;
 import com.kanerika.Vendor.dto.ExtendedSQLRequestToUnloadData;
@@ -29,12 +30,14 @@ public class VendorController {
     private final MongoDB mongoDB;
     private final Postgres postgres;
     private final MySQL mySQL;
+    private final Sftp sftp;
 
     @Autowired
-    public VendorController(MongoDB mongoDB, Postgres postgres, MySQL mySQL) {
+    public VendorController(MongoDB mongoDB, Postgres postgres, MySQL mySQL,Sftp sftp) {
         this.mongoDB = mongoDB;
         this.postgres = postgres;
         this.mySQL = mySQL;
+        this.sftp = sftp;
     }
 
     @PostMapping
@@ -66,6 +69,9 @@ public class VendorController {
                 break;
             case "mysql":
                 db = mySQL;
+                break;
+            case "sftp":
+                db = sftp;
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported vendor: " + vendor);
@@ -112,6 +118,9 @@ public class VendorController {
                 case "mysql":
                     db = mySQL;
                     break;
+                case "sftp":
+                    db = sftp;
+                    break;
                 default:
                     throw new IllegalArgumentException("Unsupported vendor: " + vendor);
             }
@@ -145,6 +154,9 @@ public class VendorController {
                 case "mysql":
                     db = mySQL;
                     break;
+                case "sftp":
+                    db = sftp;
+                    break;
                 default:
                     throw new IllegalArgumentException("Unsupported vendor: " + vendor);
             }
@@ -157,6 +169,5 @@ public class VendorController {
             return ResponseEntity.status(500).body("Error executing query: " + e.getMessage());
         }
     }
-
 
 }
