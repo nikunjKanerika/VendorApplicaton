@@ -517,13 +517,6 @@ public class JdbcController {
             }
         }
 
-//            for (String field : fields) {
-//                ColumnSpec spec = new ColumnSpec();
-//                spec.setColumnName(field);
-//                spec.setColumnType("String"); // default or infer based on value type
-//                spec.setJdbcType("VARCHAR"); // or some general type mapping
-//                columnSpecs.add(spec);
-//            }
         for (String field : fields) {
             ColumnSpec spec = new ColumnSpec();
             spec.setColumnName(field);
