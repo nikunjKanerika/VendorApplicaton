@@ -24,7 +24,7 @@ public class MongoDB implements GeneralVendor {
             if (!mongoProperties.getPort().equals(request.getConnectionParam().getPort())) {
                 throw new RuntimeException("Unsupported MongoDB port: " + request.getConnectionParam().getPort());
             }
-            String uri = "mongodb://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort();
+            String uri = "mongodb://" + request.getConnectionParam().getHost() + ":" + request.getConnectionParam().getPort() + "/?ssl=false";;
             String dbName = mongoProperties.getDbName();
             String collectionName = mongoProperties.getCollectionName();
 
@@ -60,6 +60,28 @@ public class MongoDB implements GeneralVendor {
 
         return new Gson().toJson(response);
     }
+
+    @Override
+    public String connect(String host, String port, String username, String password) {
+        return "";
+    }
+
+    @Override
+    public String connect(String s, String s1) {
+        return "";
+    }
+
+    @Override
+    public String executeQuery(String query) {
+        return "";
+    }
+
+    @Override
+    public String executeUnloadData(String query, String format, String location) {
+        return "";
+    }
+
+
 
 
 }

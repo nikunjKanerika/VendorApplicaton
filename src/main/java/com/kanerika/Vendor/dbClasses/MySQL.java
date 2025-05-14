@@ -94,4 +94,27 @@ public class MySQL implements GeneralVendor {
             return new Gson().toJson(errorResponse);
         }
     }
+
+    @Override
+    public String connect(String host, String port, String username, String password) {
+        return "";
+    }
+
+    @Override
+    public String connect(String s, String s1) {
+        return "";
+    }
+
+    @Override
+    public String executeQuery(String query) {
+        return "";
+    }
+
+    @Override
+    public String executeUnloadData(String query, String format, String location) {
+        return "";
+    }
+
+
+
 }
